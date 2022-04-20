@@ -18,14 +18,6 @@ const noteSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  success: {
-    type: Boolean,
-    default: false,
-  },
-  message: {
-    type: String,
-    default: '',
-  },
 });
 
 noteSchema.virtual('id').get(function () {

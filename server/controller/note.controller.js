@@ -8,9 +8,6 @@ const createNote = async (req, res) => {
     title: req.body.title,
     note: req.body.note,
     color: req.body.color,
-    date: req.body.date,
-    success: req.body.success,
-    message: req.body.message,
   });
   note = await note.save();
   if (!note) return res.status(400).send('the Note cannot be created!');
@@ -59,9 +56,6 @@ const updateNote = async (req, res) => {
       title: req.body.title,
       note: req.body.note,
       color: req.body.color,
-      date: req.body.date,
-      success: req.body.success,
-      message: req.body.message,
     },
     {
       new: true,
