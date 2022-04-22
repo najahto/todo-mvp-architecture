@@ -1,4 +1,4 @@
-package com.example.todomvp;
+package com.example.todomvp.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

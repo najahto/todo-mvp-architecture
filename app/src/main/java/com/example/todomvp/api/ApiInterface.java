@@ -1,8 +1,9 @@
-package com.example.todomvp;
+package com.example.todomvp.api;
+
+import com.example.todomvp.model.Note;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
 import retrofit2.http.POST;
 
 public interface ApiInterface {

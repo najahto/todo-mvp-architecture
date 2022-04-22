@@ -1,4 +1,4 @@
-package com.example.todomvp;
+package com.example.todomvp.api;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

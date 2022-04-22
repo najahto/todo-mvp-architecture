@@ -1,4 +1,4 @@
-package com.example.todomvp;
+package com.example.todomvp.activity.editor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,15 +12,25 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.todomvp.R;
+import com.example.todomvp.api.ApiClient;
+import com.example.todomvp.api.ApiInterface;
+import com.example.todomvp.model.Note;
+import com.thebluealliance.spectrum.SpectrumPalette;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EditorActivity extends AppCompatActivity {
+public class EditorActivity extends AppCompatActivity implements EditorView {
 
     EditText etTitle, etNote;
     ProgressDialog progressDialog;
-    ApiInterface apiInterface;
+    SpectrumPalette palette;
+
+    EditorPresenter presenter;
+
+    int color;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +39,20 @@ public class EditorActivity extends AppCompatActivity {
 
         etTitle = findViewById(R.id.etTitle);
         etNote = findViewById(R.id.etNote);
+        palette = findViewById(R.id.palette);
 
+        palette.setOnColorSelectedListener(
+                clr -> color = clr
+        );
+        // Default color
+        palette.setSelectedColor(getResources().getColor(R.color.white));
+        color = getResources().getColor(R.color.white);
+
+        // Progress Dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
+
+        presenter = new EditorPresenter(this);
     }
 
     @Override
@@ -48,14 +69,14 @@ public class EditorActivity extends AppCompatActivity {
                 // save
                 String title = etTitle.getText().toString().trim();
                 String note = etNote.getText().toString().trim();
-                int color = 35453;
+                int color = this.color;
 
                 if (title.isEmpty()) {
                     etTitle.setError("Please enter a title ");
                 } else if (note.isEmpty()) {
                     etNote.setError("Please enter a note");
                 } else {
-                    saveNote(title, note, color);
+                    presenter.saveNote(title, note, color);
                 }
 
                 return true;
@@ -65,34 +86,24 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
-    private void saveNote(final String title, final String note, final int color) {
-        progressDialog.show();
-        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Note newNote = new Note(title, note);
-        Call<Note> call = apiInterface.saveNote(newNote);
-        call.enqueue(new Callback<Note>() {
-            @Override
-            public void onResponse(@NonNull Call<Note> call, @NonNull Response<Note> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful() && response.body() != null) {
-                    Boolean success = response.body().getSuccess();
-                    if (success) {
-                        Log.d("message s?", response.body().getMessage());
-                        Toast.makeText(EditorActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        finish(); // back to the main activity
-                    } else {
-                        Log.d("message e?", response.body().getMessage());
-                        Toast.makeText(EditorActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<Note> call, Throwable t) {
-                progressDialog.dismiss();
-                Log.d("message error?", t.getLocalizedMessage());
-                Toast.makeText(EditorActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+    @Override
+    public void showProgress() {
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgress() {
+        progressDialog.hide();
+    }
+
+    @Override
+    public void onAddSuccess(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onAddError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

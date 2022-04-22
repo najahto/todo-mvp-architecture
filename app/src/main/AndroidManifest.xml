@@ -12,11 +12,11 @@
         android:theme="@style/Theme.TodoMVP"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".EditorActivity"
+            android:name=".activity.editor.EditorActivity"
             android:exported="false"
             android:launchMode="singleTask" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

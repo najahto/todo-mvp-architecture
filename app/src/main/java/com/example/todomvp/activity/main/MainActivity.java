@@ -1,10 +1,12 @@
-package com.example.todomvp;
+package com.example.todomvp.activity.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.todomvp.R;
+import com.example.todomvp.activity.editor.EditorActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         fabAdd = findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(view -> {
-            startActivity(new Intent(this,EditorActivity.class ));
+            startActivity(new Intent(this, EditorActivity.class ));
         });
     }
 }
