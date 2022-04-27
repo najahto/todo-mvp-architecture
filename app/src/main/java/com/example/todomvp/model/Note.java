@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class Note {
     @Expose
     @SerializedName("id")
-    private int id;
+    private String id;
 
     @Expose
     @SerializedName("title")
@@ -43,11 +43,11 @@ public class Note {
         this.color = color;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
