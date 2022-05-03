@@ -1,10 +1,13 @@
 package com.example.todomvp.activity.main;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,10 +55,30 @@ public class MainActivity extends AppCompatActivity implements MainView {
         );
 
         itemClickListener = (((view, position) -> {
-            Toast.makeText(this, notes.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+            String id = notes.get(position).getId();
+            String title = notes.get(position).getTitle();
+            String note = notes.get(position).getNote();
+            int color = notes.get(position).getColor();
+            Intent intent = new Intent(this, EditorActivity.class);
+            intent.putExtra("EXTRA_ID", id);
+            intent.putExtra("EXTRA_TITLE", title);
+            intent.putExtra("EXTRA_NOTE", note);
+            intent.putExtra("EXTRA_COLOR", color);
+//            startActivityForResult(intent, INTENT_EDIT);
+            startActivityForResult.launch(intent);
+//            Toast.makeText(this, notes.get(position).getTitle(), Toast.LENGTH_SHORT).show();
         }));
 
     }
+
+    ActivityResultLauncher<Intent> startActivityForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    presenter.getData();
+                }
+            }
+    );
 
     @Override
     public void showLoading() {
@@ -69,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void onGetResult(List<Note> notes) {
-        Log.d("data ?",notes.toString());
+        Log.d("data ?", notes.toString());
         adapter = new MainAdapter(notes, this, itemClickListener);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);

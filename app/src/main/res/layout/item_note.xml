@@ -18,7 +18,7 @@
         android:id="@+id/line"
         android:layout_width="10dp"
         android:layout_height="match_parent"
-        android:background="#687679"
+        android:background="#49000000"
         android:orientation="vertical" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
