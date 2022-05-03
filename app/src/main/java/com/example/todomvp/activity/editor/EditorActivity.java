@@ -3,7 +3,9 @@ package com.example.todomvp.activity.editor;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -125,6 +127,20 @@ public class EditorActivity extends AppCompatActivity implements EditorView {
                 } else {
                     presenter.updateNote(id, title, note, color);
                 }
+                return true;
+            case R.id.delete:
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                alertDialog.setTitle("Confirm delete!");
+                alertDialog.setMessage("Are you sure?");
+                alertDialog.setNegativeButton("Yes", ((dialog, i) -> {
+                    dialog.dismiss();
+                    presenter.deleteNote(id);
+                }));
+                alertDialog.setPositiveButton("No", ((dialog, i) -> {
+                    dialog.dismiss();
+                }));
+                alertDialog.show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

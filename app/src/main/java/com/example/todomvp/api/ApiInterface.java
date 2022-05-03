@@ -6,6 +6,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -28,6 +29,9 @@ public interface ApiInterface {
             @Path("id") String id,
             @Body Note note
     );
+
+    @DELETE("notes/{id}")
+    Call<Note> deleteNote(@Path("id") String id);
 
 
 }
